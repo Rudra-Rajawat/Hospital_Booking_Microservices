@@ -7,10 +7,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.dto.BookingDTO;
 
+/**
+ * BookingClient is a Feign client interface for communicating with the Booking Service.
+ * It provides a method to register a new booking.
+ */
 @FeignClient("BOOKING-SERVICE")
 public interface BookingClient {
-	
-	@PostMapping("/bookings/register")
-	public ResponseEntity<BookingDTO> register(@RequestBody BookingDTO booking);
-	
+    
+    /**
+     * Registers a new booking with the Booking Service.
+     * 
+     * @param booking the booking details to be registered
+     * @return ResponseEntity containing the registered booking
+     */
+    @PostMapping("/bookings/register")
+    public ResponseEntity<BookingDTO> register(@RequestBody BookingDTO booking);
+    
 }
