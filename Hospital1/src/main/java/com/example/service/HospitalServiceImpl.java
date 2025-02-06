@@ -1,5 +1,7 @@
 package com.example.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,4 +40,10 @@ public class HospitalServiceImpl implements HospitalService{
     public Hospital getHospitalById(Long id) {
         return hospitalRepository.findById(id).orElseThrow(() -> new RuntimeException("hospital not found"));
     }
+
+	@Override
+	public List<Hospital> getAllHospitals() {
+		return hospitalRepository.findAll();
+	}
+
 }

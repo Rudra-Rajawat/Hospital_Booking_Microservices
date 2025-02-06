@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.BookingDTO;
+import com.example.dto.DepartmentDTO;
 import com.example.dto.HospitalDTO;
 import com.example.entity.Patient;
 import com.example.feign.BookingClient;
+import com.example.feign.DepartmentClient;
 import com.example.feign.HospitalClient;
 import com.example.service.PatientService;
 
@@ -34,6 +38,9 @@ public class PatientController {
     @Autowired
     BookingClient bookingClient;
     
+    @Autowired
+    DepartmentClient departmentClient;
+    
     /**
      * Registers a new patient.
      * 
@@ -42,7 +49,7 @@ public class PatientController {
      */
     @PostMapping("/register")
     public ResponseEntity<Patient> register(@RequestBody Patient patient){
-        return new ResponseEntity<>(patientService.register(patient), HttpStatus.OK);
+        return new ResponseEntity<>(patientService.register(patient), HttpStatus.CREATED);
     }
     
     /**
@@ -63,16 +70,18 @@ public class PatientController {
      * @param hId the ID of the hospital where the patient is to be registered
      * @return ResponseEntity containing the booking details and HTTP status OK
      */
-    @PostMapping("/{pId}/register/{hId}")
-    public ResponseEntity<BookingDTO> registerPatientToHospital(@PathVariable long pId, @PathVariable long hId){
-        System.out.println("Pid: " + pId);
-        System.out.println("Hid: " + hId);
+    @PostMapping("/{pId}/register/{hId}/toDepartment/{dId}")
+    public ResponseEntity<BookingDTO> registerPatientToHospital(@PathVariable("pId") long pId, @PathVariable("hId") long hId,  @PathVariable("dId") long dId){
         Patient patient = patientService.getPatientById(pId);
         if (patient == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         HospitalDTO hospital = hospitalClient.getHospitalById(hId).getBody();
         if (hospital == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        DepartmentDTO department = departmentClient.getById(dId).getBody();
+        if (department == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         BookingDTO booking = new BookingDTO();
@@ -83,8 +92,28 @@ public class PatientController {
         booking.setHopspitalId(hospital.getId());
         booking.setHopspitalName(hospital.getName());
         booking.setHopspitalAddress(hospital.getAddress());
+        booking.setDepartmentId(department.getId());
+        booking.setDepartmentName(department.getName());
         booking.setStatus("BOOKING CONFIRMED");
         bookingClient.register(booking);
         return ResponseEntity.ok(booking);
+    }
+    
+    @GetMapping("/hospitals/getAll")
+    public ResponseEntity<List<HospitalDTO>> getAllHospitals(){
+    	List<HospitalDTO> list = hospitalClient.getAllHospitals().getBody();
+        if (list == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(list);
+    }
+    
+    @GetMapping("/departments/getAll")
+    public ResponseEntity<List<DepartmentDTO>> getAllDepartments(){
+    	List<DepartmentDTO> list = departmentClient.getAll().getBody();
+        if (list == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(list);
     }
 }

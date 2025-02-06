@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +46,10 @@ public class HospitalController {
     @GetMapping("/getById/{id}")
     public ResponseEntity<Hospital> getHospitalById(@PathVariable("id") Long id){
         return ResponseEntity.ok(hospitalService.getHospitalById(id));
+    }
+    
+    @GetMapping("/getAll")
+    public ResponseEntity<List<Hospital>> getAllHospitals(){
+        return ResponseEntity.ok(hospitalService.getAllHospitals());
     }
 }

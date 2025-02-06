@@ -1,7 +1,8 @@
 package com.example.service;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
+import org.springframework.stereotype.Service;
 import com.example.entity.Hospital;
 
 /**
@@ -27,4 +28,6 @@ public interface HospitalService {
      * @return the hospital details
      */
     Hospital getHospitalById(Long id);
+    
+    List<Hospital> getAllHospitals();
 }

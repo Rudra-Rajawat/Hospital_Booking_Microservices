@@ -16,5 +16,7 @@ public class BookingDTO {
 	private Long hopspitalId;
 	private String hopspitalName;
 	private String hopspitalAddress;
+	private Long departmentId;
+	private String departmentName;
 	private String status;
 }
