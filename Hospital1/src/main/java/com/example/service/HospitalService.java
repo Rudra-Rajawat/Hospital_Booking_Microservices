@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import com.example.entity.Hospital;
+import com.example.exception.HospitalNotFound;
 
 /**
  * HospitalService is a service interface that defines methods for managing hospital entities.
@@ -27,7 +28,7 @@ public interface HospitalService {
      * @param id the ID of the hospital to be retrieved
      * @return the hospital details
      */
-    Hospital getHospitalById(Long id);
+    Hospital getHospitalById(Long id) throws HospitalNotFound;
     
     List<Hospital> getAllHospitals();
 }

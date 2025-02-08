@@ -1,8 +1,11 @@
 package com.example.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Patient;
+import com.example.exception.PatientNotFound;
 
 /**
  * PatientService is a service interface that defines methods for managing patient entities.
@@ -25,5 +28,7 @@ public interface PatientService {
      * @param id the ID of the patient to be retrieved
      * @return the patient details
      */
-    Patient getPatientById(Long id);
+    Patient getPatientById(Long id) throws PatientNotFound;
+    
+    List<Patient> getAll();
 }

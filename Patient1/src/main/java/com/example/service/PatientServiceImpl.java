@@ -1,9 +1,12 @@
 package com.example.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Patient;
+import com.example.exception.PatientNotFound;
 import com.example.repository.PatientRepository;
 
 /**
@@ -36,7 +39,12 @@ public class PatientServiceImpl implements PatientService {
      * @throws RuntimeException if no patient is found with the given ID
      */
     @Override
-    public Patient getPatientById(Long id) {
-        return patientRepository.findById(id).orElseThrow(() -> new RuntimeException("Patient not found"));
+    public Patient getPatientById(Long id) throws PatientNotFound{
+        return patientRepository.findById(id).orElseThrow(() -> new PatientNotFound("No patient found with id : "+ id));
     }
+
+	@Override
+	public List<Patient> getAll() {
+		return patientRepository.findAll();
+	}
 }
