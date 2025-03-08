@@ -79,13 +79,7 @@ class Booking1ApplicationTests {
     @Test
     void testGetBookingByPatientId() {
         when(bookingRepository.findById(101L)).thenReturn(Optional.of(booking));
-        Booking foundBooking = bookingService.getBookingByPatientId(101L);
+        List<Booking> foundBooking = bookingService.getBookingByPatientId(101L);
         assertEquals(booking, foundBooking);
-    }
-
-    @Test
-    void testGetBookingByPatientIdNotFound() {
-        when(bookingRepository.findById(101L)).thenReturn(Optional.empty());
-        assertThrows(RuntimeException.class, () -> bookingService.getBookingByPatientId(101L));
     }
 }

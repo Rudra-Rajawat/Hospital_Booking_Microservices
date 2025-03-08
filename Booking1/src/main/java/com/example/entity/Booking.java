@@ -4,11 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,48 +14,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Booking {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@NotNull(message = "Booking Id cannot be null")
-    @Min(value = 1, message = "Booking Id must be greater than or equal to 1")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
-	
-	@NotNull(message = "Patient Id cannot be null")
-    @Min(value = 1, message = "Patient Id must be greater than or equal to 1")
+	private Long userId;
 	private Long patientId;
-	
-	@NotBlank(message = "Enter a valid Patient name")
-    @Size(min = 2, max = 50, message = "Patient name must be between 2 and 50 characters")
 	private String patientName;
-	
-	@NotEmpty(message = "Patient Age cannot be empty")
-    @Min(value = 1, message = "Patient Age must be greater than 0")
 	private int patientAge;
-	
-	@NotBlank(message = "Enter a valid Patient Gender")
-    @Size(min = 2, max = 50, message = "Patient Gender must be between 2 and 50 characters")
 	private String patientGender;
-	
-	@NotNull(message = "Hospital Id cannot be null")
-    @Min(value = 1, message = "Hospital Id must be greater than or equal to 1")
 	private Long hospitalId;
-	
-	@NotBlank(message = "Enter a valid Hospital name")
-    @Size(min = 2, max = 50, message = "Hospital name must be between 2 and 50 characters")
 	private String hospitalName;
-	
-	@NotBlank(message = "Enter a valid Hospital Address")
-    @Size(min = 2, max = 50, message = "Hospital Address must be between 2 and 50 characters")
 	private String hospitalAddress;
-	
-	@NotNull(message = "Department Id cannot be null")
-    @Min(value = 1, message = "Department Id must be greater than or equal to 1")
 	private Long departmentId;
-	
-	@NotBlank(message = "Enter a valid Department name")
-    @Size(min = 2, max = 50, message = "Department name must be between 2 and 50 characters")
 	private String departmentName;
 	
-	@NotNull(message = "Status cannot be null")
+	@NotBlank(message = "Status cannot be empty")
 	private String status;
 }

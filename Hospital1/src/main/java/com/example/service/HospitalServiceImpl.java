@@ -29,5 +29,22 @@ public class HospitalServiceImpl implements HospitalService{
 	public List<Hospital> getAllHospitals() {
 		return hospitalRepository.findAll();
 	}
+	
+	@Override
+    public Hospital update(Long hospitalId, Hospital hospitalDetails) throws HospitalNotFound {
+        Hospital existingHospital = hospitalRepository.findById(hospitalId)
+                .orElseThrow(() -> new HospitalNotFound("Hospital not found with id: " + hospitalId));
+
+        existingHospital.setName(hospitalDetails.getName());
+        existingHospital.setAddress(hospitalDetails.getAddress());
+
+        return hospitalRepository.save(existingHospital);
+    }
+
+	@Override
+	public String deleteHospitalById(Long id) {
+		hospitalRepository.deleteById(id);
+		return "Hospital Deleted";
+	}
 
 }
